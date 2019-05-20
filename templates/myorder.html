@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Your order</title>
+<link rel="stylesheet" href={{url_for('static', filename='css/cart.css')}} />
+<link rel="stylesheet" href={{url_for('static', filename='css/topStyle.css') }} />
+
+</head>
+<body>
+<div id="title">
+	<a action="{{ url_for('eshopping') }}" method=GET  href={{ url_for('eshopping') }}?name={{watchlistname}}_{{watchlistid}}>
+		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
+	</a>
+	<form action="{{ url_for('search') }}" method="GET" >
+		<input id="searchBox" type="text" name="keyword">
+		<input id="searchButton" type="submit" name="aaa" value="Search" >
+        <input type="hidden" id="div1" name="aa" value="{{watchlistname}}_{{watchlistid}}"> /div>
+	</form>
+
+	{% if not loggedIn %}
+		<div id="signInButton">
+			<a class="link" href="/loginForm">Sign In</a>
+		</div>
+	{% else %}
+	<div class="dropdown">
+		<button class="dropbtn">Hello, <br>{{firstName}}</button>
+		<div class="dropdown-content">
+			<a href="/account/orders?name={{watchlistname}}_{{watchlistid}}">Your orders</a>
+			<a  href="/account/profile?name={{watchlistname}}_{{watchlistid}}">Your profile</a>
+			<hr>
+			<a href="/logout">Sign Out</a>
+		</div>
+	</div>
+	{% endif %}
+	<div id="kart">
+		<a class="link" href="/cart?name={{watchlistname}}_{{watchlistid}}">
+		<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
+		CART {{noOfItems}}
+		</a>
+	</div>
+</div>
+
+<div id="orderItems">
+	<div id="tableItems">
+    {% if orderid %}
+        <h2>My Order</h2>
+        {% for i in orderid %}
+            <p><a href="/account/orders?name={{watchlistname}}_{{watchlistid}}_{{(i[0])}}">Orders number:{{i[0]+ 7382738}}</a></p>
+         {% endfor %}
+    {% elif products %}
+        <h2>Order {{a + 7382738}} detail</h2>
+    {% else %}
+       <h2>My Order</h2>
+          you don't have order anything
+    {% endif %}
+	</div>
+</div>
+<div id="tableItems">
+    {% if products %}
+
+		{% for row in products %}
+		<div>
+			<hr id="seperator">
+			<div id="itemImage">
+				<img src={{url_for('static', filename='uploads/'+row[3])}} id="image"/>
+			</div>
+			<div id="itemPrice">
+				${{row[2]}}
+			</div>
+		</div>
+		{% endfor %}
+		<hr id="seperator">
+		<div id="total">
+			<span id="subtotal">Subtotal</span> : ${{totalPrice}}
+		</div>
+        <div id="status">
+			<span id="subtotal">status: {{status}}</span>
+		</div>
+    {% endif %}
+	</div>
+</body>
+</html>
+

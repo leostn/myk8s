@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if session.logged_in%}
+    <div class="container-fluid">
+      <div class="row row-offcanvas">
+        <!-- sidebar -->
+        <div class="col-xs-9 col-sm-3" id="sidebar" role="navigation">
+            <ul class="nav">
+            {% if showwatch %}
+              <a id="My lists" name="My Lists" href="#subItems" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">My Lists<i class="fa fa-caret-down"></i></a>
+                    <div  class="collapse" id="subItems">
+                     {% for watchlist in watchlistsname %}
+                        <li  class="list-group-item "><a id={{watchlist.firstName}}  action="{{ url_for('function_select') }}" method=GET  href="{{ url_for('function_select') }}?name={{ watchlist.firstName}}_{{watchlist.watchlist_id}}" style="font-size:10px;text-align:left;color: black;width: 10px" >{{ watchlist.firstName}}</a>
+                            <span class="badge"><a id=delete_{{watchlist.firstName}}  action="{{ url_for('delete_watchlist') }}" method=GET  href="{{ url_for('delete_watchlist') }}?name=delete_{{watchlist.firstName}}_{{watchlist.watchlist_id}}" style="font-size:20px;text-align:right ;width: 60px;color: red" >detete</a></span> </li>
+                     {%endfor%}
+                    <a id="test" name="test" href="{{ url_for('registrationForm') }}" class="list-group-item" style="font-size:18px;text-align:center;">+</a>
+                  </div>
+                    {% if addwathlist %}
+                     <form  action="{{ url_for('add_watchlist') }}" method=post class="list-group-item list-group-item-success">
+{#                     <li><input type="text" name="watchlistname" placeholder="Enter a watchlist name" required="" id="watchlistname" />#}
+{#                        <input id=btn_confirm type=submit name="btn_confirm" value=confirm /></li>#}
+                     </form>{% endif %}
+              {% endif %}
+            </ul>
+        </div>
+
+ {% if showwatchlist %}
+      <body> <p style=font-size:18px; text-align:center></p> <h1>Hi,{{showwatchlist}},please choose the function</h1></body>
+      <a action="{{ url_for('eshopping') }}" method=GET  href="{{ url_for('eshopping') }}?name={{showwatchlist}}_{{showid}}" style="font-size:18px;text-align:center;">E-shopping</a>
+        <p></p>
+      <a action="{{ url_for('feedback') }}" method=GET  href="{{ url_for('feedback') }}?name={{showwatchlist}}_{{showid}}" style="font-size:18px;text-align:center;">feedback</a>
+          </div>
+      </div>
+    </div>
+{%  endif %}
+{%  endif %}
+
+{% endblock %}
+
+

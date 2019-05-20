@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: web
+  template:
+    metadata:
+      labels:
+        run: web
+    spec:
+      containers:
+      - image: gcr.io/qwiklabs-gcp-9094ea4dbe00e37c/test:1st
+        name: web
+        ports:
+        - containerPort: 8080
+          protocol: TCP

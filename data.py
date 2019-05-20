@@ -1,0 +1,310 @@
+import sqlite3
+
+#Open database
+conn = sqlite3.connect('user.db')
+
+conn.execute('''drop table if exists users;''')
+conn.execute('''create table users (
+  username text primary key,
+  password text not null
+)''')
+conn.execute('''drop table if exists user_watchlists;''')
+conn.execute('''create table user_watchlists(
+  watchlist_id integer primary key AUTOINCREMENT,
+  username text,
+  email TEXT,
+  gender text,
+  firstName TEXT,
+  lastName TEXT,
+  address1 TEXT,
+		postcode TEXT,
+		city TEXT,
+		phone TEXT,
+  foreign key(username) references users(username)
+)''')
+
+conn.execute('''drop table if exists products;''')
+conn.execute('''CREATE TABLE products
+		(productId INTEGER PRIMARY KEY,
+		name TEXT,
+		price REAL,
+		gender text,
+		description TEXT,
+		image TEXT,
+		stock INTEGER,
+		categoryId INTEGER,
+		state text,
+		FOREIGN KEY(categoryId) REFERENCES categories(categoryId)
+		)''')
+
+conn.execute('''drop table if exists categories;''')
+conn.execute('''CREATE TABLE categories
+		(categoryId INTEGER PRIMARY KEY,
+		type TEXT,
+		gender text
+		)''')
+
+conn.execute('''CREATE TABLE kart
+    (watchlist_id integer,
+    items_id integer PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    productId INTEGER,
+    FOREIGN KEY(watchlist_id) REFERENCES user_watchlists(watchlist_id),
+    FOREIGN KEY(username) REFERENCES users(username),
+    FOREIGN KEY(productId) REFERENCES products(productId)
+    )''')
+
+conn.execute('''drop table if exists ordernum;''')
+conn.execute('''CREATE TABLE ordernum(
+    watchlist_id integer,
+    order_id integer PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    status text,
+    FOREIGN KEY(watchlist_id) REFERENCES user_watchlists(watchlist_id),
+    FOREIGN KEY(username) REFERENCES users(username)
+    )''')
+
+conn.execute('''drop table if exists state;''')
+conn.execute('''CREATE TABLE state
+    (watchlist_id integer,
+    username TEXT,
+    order_id integer,
+    productId INTEGER,
+    FOREIGN KEY(watchlist_id) REFERENCES user_watchlists(watchlist_id),
+    FOREIGN KEY(username) REFERENCES users(username),
+    FOREIGN KEY(productId) REFERENCES products(productId),
+    FOREIGN KEY(order_id) REFERENCES ordernum(order_id)
+    )''')
+
+conn.execute('''insert into users (username,password) values('stn131415','Stn131415~');''')
+
+conn.execute('''insert into categories values(1, 'T-shirt','m');''')
+conn.execute('''insert into categories values(2, 'Shirt','m');''')
+conn.execute('''insert into categories values(4, 'Jacket','m');''')
+conn.execute('''insert into categories values(5, 'Pants','m');''')
+conn.execute('''insert into categories values(6, 'Hoodie','m');''')
+conn.execute('''insert into categories values(7, 'T-shirt','f');''')
+conn.execute('''insert into categories values(8, 'Shirt','f');''')
+conn.execute('''insert into categories values(9, 'Jacket','f');''')
+conn.execute('''insert into categories values(10, 'Pants','f');''')
+conn.execute('''insert into categories values(11, 'Hoodie','f');''')
+conn.execute('''insert into categories values(12, 'Skirt','f');''')
+
+conn.execute('''insert into products values(1, 'plaid shirt','120','f','beautiful','1.jpg','200','8','p');''')
+conn.execute('''insert into products values(2, 'denim shirt','38','f','comfortable','2.jpg','200','8','p');''')
+conn.execute('''insert into products values(3, 'casual shirt','70','f',' Watercolor','3.jpg','100','8','p');''')
+conn.execute('''insert into products values(4, 'Fashion short sleeve','60','f','young,fabulous','4.jpg','300','8','p');''')
+conn.execute('''insert into products values(5, 'High collar long sleeve','180','f','fashion','5.jpg','700','8','p');''')
+conn.execute('''insert into products values(6, 'Loose shirt','220','f','fashion','6.jpg','900','8','p');''')
+conn.execute('''insert into products values(7, 'Loose shirt','180','f','beautiful','7.jpg','1200','8','p');''')
+conn.execute('''insert into products values(8, 'vest','70','f','summer','8.jpg','600','8','p');''')
+conn.execute('''insert into products values(9, 'Plaid top','62','f','summer','9.jpg','800','8','n');''')
+conn.execute('''insert into products values(10, 'Plaid top','75','f','fashion','10.jpg','200','8','n');''')
+conn.execute('''insert into products values(11, 'Plaid top','100','f','flower','11.jpg','200','8','n');''')
+conn.execute('''insert into products values(12, 'Plaid top','120','f','white','12.jpg','200','8','n');''')
+conn.execute('''insert into products values(13, 'Plaid top','70','f','cool','13.jpg','200','8','n');''')
+conn.execute('''insert into products values(14, 'Plaid top','120','f','beautiful','14.jpg','200','8','n');''')
+conn.execute('''insert into products values(15, 'Plaid top','110','f','green','15.jpg','200','8','n');''')
+conn.execute('''insert into products values(16, 'Plaid top','29','f','colourful','16.jpg','300','8','n');''')
+conn.execute('''insert into products values(17, 'Plaid top','40','f','long','17.jpg','20','8','n');''')
+conn.execute('''insert into products values(18, 'Plaid top','80','f','white','18.jpg','100','8','n');''')
+conn.execute('''insert into products values(19, 'Plaid top','60','f','comfortable','19.jpg','200','8','n');''')
+conn.execute('''insert into products values(20, 'Plaid top','27','f','soft','20.jpg','200','8','n');''')
+conn.execute('''insert into products values(21, 'Plaid top','30','f','long','21.jpg','150','8','n');''')
+conn.execute('''insert into products values(22, 'Plaid top','70','f','long','22.jpg','70','8','n');''')
+conn.execute('''insert into products values(23, 'Hoodie','65','f','black','23.jpg','60','11','n');''')
+conn.execute('''insert into products values(24, 'Hoodie','79','f','cool','24.jpg','220','11','n');''')
+conn.execute('''insert into products values(25, 'Hoodie','83','f','cool','25.jpg','210','11','n');''')
+conn.execute('''insert into products values(26, 'Hoodie','70','f','fashion','26.jpg','230','11','n');''')
+conn.execute('''insert into products values(27, 'Hoodie','80','f','solid colour','27.jpg','90','11','n');''')
+conn.execute('''insert into products values(28, 'Hoodie','80','f','solid colour','28.jpg','97','11','n');''')
+conn.execute('''insert into products values(29, 'Hoodie','80','f','colourful','29.jpg','80','11','n');''')
+conn.execute('''insert into products values(30, 'Hoodie','70','f','solid colour','30.jpg','90','11','n');''')
+conn.execute('''insert into products values(31, 'Hoodie','60','f','long','31.jpg','140','11','n');''')
+conn.execute('''insert into products values(32, 'Hoodie','90','f','fashion','32.jpg','170','11','n');''')
+conn.execute('''insert into products values(33, 'Hoodie','110','f','solid colour','33.jpg','190','11','n');''')
+conn.execute('''insert into products values(34, 'Hoodie','120','f','fashion','34.jpg','220','11','n');''')
+conn.execute('''insert into products values(35, 'Hoodie','110','f','fashion','35.jpg','290','11','n');''')
+conn.execute('''insert into products values(36, 'Hoodie','80','f','colourful','36.jpg','270','11','n');''')
+conn.execute('''insert into products values(37, 'Hoodie','90','f','solid colour','37.jpg','190','11','n');''')
+conn.execute('''insert into products values(38, 'Hoodie','60','f','solid colour','38.jpg','180','11','n');''')
+conn.execute('''insert into products values(39, 'Hoodie','70','f','fashion','39.jpg','190','11','n');''')
+conn.execute('''insert into products values(40, 'Hoodie','90','f','solid colour','40.jpg','200','11','n');''')
+conn.execute('''insert into products values(41, 'Hoodie','100','f','fashion','41.jpg','100','11','n');''')
+conn.execute('''insert into products values(42, 'Hoodie','120','f','fashion','42.jpg','270','11','n');''')
+conn.execute('''insert into products values(43, 'Hoodie','160','f','cool','43.jpg','230','11','n');''')
+conn.execute('''insert into products values(44, 'Hoodie','90','f','lovely','44.jpg','240','11','n');''')
+conn.execute('''insert into products values(45, 'Hoodie','80','f','lovely','45.jpg','180','11','n');''')
+conn.execute('''insert into products values(46, 'Hoodie','90','f','fashion','46.jpg','190','11','n');''')
+conn.execute('''insert into products values(47, 'Hoodie','120','f','solid colour','47.jpg','210','11','n');''')
+conn.execute('''insert into products values(48, 'Hoodie','100','f','fashion','48.jpg','280','11','n');''')
+conn.execute('''insert into products values(49, 'Hoodie','40','f','solid colour','49.jpg','290','11','n');''')
+conn.execute('''insert into products values(50, 'Flash autumn hoodie','70','f','flash','50.jpg','200','11','p');''')
+conn.execute('''insert into products values(51, 'Sports Hoodie','80','f','three colour','51.jpg','100','11','p');''')
+conn.execute('''insert into products values(52, 'Mickey Hoodie','90','f','lovely','52.jpg','120','11','p');''')
+conn.execute('''insert into products values(53, 'Fashion Hoodie','80','f','long','53.jpg','180','11','p');''')
+conn.execute('''insert into products values(54, 'Colourful Hoodie','70','f','colourful','54.jpg','200','11','p');''')
+conn.execute('''insert into products values(55, 'Two colour Hoodie','60','f','Two colour','55.jpg','320','11','p');''')
+conn.execute('''insert into products values(56, 'Solid colour Skirt','90','f','lovely','56.jpg','220','12','p');''')
+conn.execute('''insert into products values(57, 'short Skirt','80','f','beautiful','57.jpg','320','12','p');''')
+conn.execute('''insert into products values(58, 'Fashion Skirt','70','f','lovely','58.jpg','180','12','p');''')
+conn.execute('''insert into products values(59, 'Long flower style Skirt','60','f','fashion','59.jpg','130','12','p');''')
+conn.execute('''insert into products values(60, 'Dancing Skirt','40','f','lovely','60.jpg','170','12','p');''')
+conn.execute('''insert into products values(61, 'Mature Skirt','80','f','beautiful','61.jpg','210','12','p');''')
+conn.execute('''insert into products values(62, 'Student Skirt','90','f','fashion','62.jpg','220','12','p');''')
+conn.execute('''insert into products values(63, 'Long Solid colour Skirt','80','f','lovely','63.jpg','300','12','p');''')
+conn.execute('''insert into products values(64, 'Long Thin Skirt','70','f','beautiful','64.jpg','190','12','n');''')
+conn.execute('''insert into products values(65, 'Skirt','60','f','good','65.jpg','180','12','n');''')
+conn.execute('''insert into products values(66, 'Skirt','50','f','lovely','66.jpg','260','12','n');''')
+conn.execute('''insert into products values(67, 'Skirt','60','f','lovely','67.jpg','20','12','n');''')
+conn.execute('''insert into products values(68, 'Skirt','70','f','beautiful','68.jpg','70','12','n');''')
+conn.execute('''insert into products values(69, 'Skirt','70','f','long','69.jpg','320','12','n');''')
+conn.execute('''insert into products values(70, 'Skirt','80','f','lovely','70.jpg','250','12','n');''')
+conn.execute('''insert into products values(71, 'Skirt','90','f','good','71.jpg','270','12','n');''')
+conn.execute('''insert into products values(72, 'Skirt','90','f','long','72.jpg','89','12','n');''')
+conn.execute('''insert into products values(73, 'Skirt','80','f','short','73.jpg','78','12','n');''')
+conn.execute('''insert into products values(74, 'Skirt','70','f','lovely','74.jpg','210','12','n');''')
+conn.execute('''insert into products values(75, 'Skirt','60','f','lovely','75.jpg','170','12','n');''')
+conn.execute('''insert into products values(76, 'Skirt','40','f','hot','76.jpg','180','12','n');''')
+conn.execute('''insert into products values(77, 'Skirt','50','f','pop','77.jpg','190','12','n');''')
+conn.execute('''insert into products values(78, 'Skirt','60','f','lovely','78.jpg','230','12','n');''')
+conn.execute('''insert into products values(79, 'Skirt','70','f','beautiful','79.jpg','160','12','n');''')
+conn.execute('''insert into products values(80, 'Skirt','80','f','lovely','80.jpg','120','12','n');''')
+conn.execute('''insert into products values(81, 'Mesh Jeans','90','f','Two colour','81.jpg','170','10','p');''')
+conn.execute('''insert into products values(82, 'Normal Jeans','170','f','fashion','82.jpg','270','10','p');''')
+conn.execute('''insert into products values(83, 'Stovepipe Jeans','190','f','stovepipe pants','83.jpg','180','10','p');''')
+conn.execute('''insert into products values(84, 'Bib pants Jeans','110','f','popular','84.jpg','120','10','p');''')
+conn.execute('''insert into products values(85, 'Jeans','70','f','fashion','85.jpg','190','10','n');''')
+conn.execute('''insert into products values(86, 'Jeans','80','f','good','86.jpg','80','10','n');''')
+conn.execute('''insert into products values(87, 'Jeans','40','f','stovepipe pants','87.jpg','190','10','n');''')
+conn.execute('''insert into products values(88, 'Jeans','60','f','fat','88.jpg','170','10','n');''')
+conn.execute('''insert into products values(89, 'Super short Choli','70','f','short','89.jpg','200','7','p');''')
+conn.execute('''insert into products values(90, 'Normal Choli','60','f','long','90.jpg','180','7','p');''')
+conn.execute('''insert into products values(91, 'Old Choli','30','f','old','91.jpg','70','7','p');''')
+conn.execute('''insert into products values(92, 'Flower Choli','20','f','fashion','92.jpg','130','7','p');''')
+conn.execute('''insert into products values(93, 'Choli','50','f','beautiful','93.jpg','120','7','n');''')
+conn.execute('''insert into products values(94, 'Choli','40','f','beautiful','94.jpg','160','7','n');''')
+conn.execute('''insert into products values(95, 'White Choli','30','f','fashion','95.jpg','150','7','p');''')
+conn.execute('''insert into products values(96, 'Fashion denim jacket','70','f','fashion','96.jpg','170','9','p');''')
+conn.execute('''insert into products values(97, 'denim jacket','120','f','beautiful','97.jpg','180','9','n');''')
+conn.execute('''insert into products values(98, 'denim jacket','130','f','fashion','98.jpg','120','9','n');''')
+conn.execute('''insert into products values(99, 'Fashion latest denim jacket','180','f','long','99.jpg','190','9','p');''')
+conn.execute('''insert into products values(100, 'Young denim jacket','90','f','fashion','100.jpg','50','9','p');''')
+conn.execute('''insert into products values(101, 'Puffy Jacket','250','m','Pristine Condition','101.jpg','100','4','p');''')
+conn.execute('''insert into products values(102, 'Ice Jacket','240','m','Pristine Condition','102.jpg','100','4','p');''')
+conn.execute('''insert into products values(103, 'Lakers Sweatshirt','160','m','Pristine Condition','103.jpg','100','6','p');''')
+conn.execute('''insert into products values(104, 'Ink Sweatshirt','150','m','Pristine Condition','104.jpg','100','6','p');''')
+conn.execute('''insert into products values(105, 'Red Jacket','220','m','Pristine Condition','105.jpg','100','4','n');''')
+conn.execute('''insert into products values(106, 'Stripe Sweatshirt','150','m','Pristine Condition','106.jpg','100','6','p');''')
+conn.execute('''insert into products values(107, 'Navy Shirt','180','m','Pristine Condition','107.jpg','120','2','p');''')
+conn.execute('''insert into products values(108, 'Brown Sweatshirt','330','m','Pristine Condition','108.jpg','30','6','p');''')
+conn.execute('''insert into products values(109, 'Vintage Tee','80','m','Pristine Condition','109.jpg','100','1','p');''')
+conn.execute('''insert into products values(110, 'Black Tee','80','m','Pristine Condition','110.jpg','100','1','p');''')
+conn.execute('''insert into products values(111, 'Ash Grey Sweatshirt','260','m','Pristine Condition','111.jpg','100','6','p');''')
+conn.execute('''insert into products values(112, 'Teal Tee','90','m','Pristine Condition','112.jpg','100','1','p');''')
+conn.execute('''insert into products values(113, 'Royal Tee','85','m','Pristine Condition','113.jpg','100','1','p');''')
+conn.execute('''insert into products values(114, 'Windproof Jacket','250','m','Pristine Condition','114.jpg','100','4','p');''')
+conn.execute('''insert into products values(115, 'Black Trackpant','140','m','Pristine Condition','115.jpg','100','5','p');''')
+conn.execute('''insert into products values(116, 'Chicago Tee','90','m','Pristine Condition','116.jpg','100','1','n');''')
+conn.execute('''insert into products values(117, 'Sonic Tee','80','m','Pristine Condition','117.jpg','100','1','p');''')
+conn.execute('''insert into products values(118, 'Purple Sweatpant','150','m','Pristine Condition','118.jpg','100','5','p');''')
+conn.execute('''insert into products values(119, 'White Jumper','160','m','Pristine Condition','119.jpg','100','6','n');''')
+conn.execute('''insert into products values(120, 'Wool Jacket','270','m','Pristine Condition','120.jpg','100','4','p');''')
+conn.execute('''insert into products values(121, 'Leopard Shirt','180','m','Pristine Condition','121.jpg','120','2','p');''')
+conn.execute('''insert into products values(122, 'Flower Shirt','180','m','Pristine Condition','122.jpg','120','2','p');''')
+conn.execute('''insert into products values(123, 'Corduroy Hoodie','180','m','Pristine Condition','123.jpg','100','6','n');''')
+conn.execute('''insert into products values(124, 'Grey Jumper','160','m','Pristine Condition','124.jpg','100','6','n');''')
+conn.execute('''insert into products values(125, 'Goose Down Jacket','290','m','Pristine Condition','125.jpg','90','4','n');''')
+conn.execute('''insert into products values(126, 'Olive Jacket','290','m','Pristine Condition','126.jpg','90','4','n');''')
+conn.execute('''insert into products values(127, 'Soft Hoodie','160','m','Pristine Condition','127.jpg','100','6','n');''')
+conn.execute('''insert into products values(128, 'Forest Green Jumper','320','m','Pristine Condition','128.jpg','100','6','n');''')
+conn.execute('''insert into products values(129, 'White Jumper','160','m','Pristine Condition','129.jpg','100','6','n');''')
+conn.execute('''insert into products values(130, 'Old Navy Tee','80','m','Pristine Condition','130.jpg','100','1','n');''')
+conn.execute('''insert into products values(131, 'Red on Navy Tee','80','m','Pristine Condition','131.jpg','100','1','n');''')
+conn.execute('''insert into products values(132, 'Royal Hoodie','300','m','Pristine Condition','132.jpg','100','6','n');''')
+conn.execute('''insert into products values(133, 'Black Light Jacket','290','m','Pristine Condition','133.jpg','100','4','n');''')
+conn.execute('''insert into products values(134, 'Mountain Jacket','320','m','Pristine Condition','134.jpg','100','4','n');''')
+conn.execute('''insert into products values(135, 'Wine Jacket','250','m','Pristine Condition','135.jpg','100','4','n');''')
+conn.execute('''insert into products values(136, 'Black Hoodie','350','m','Pristine Condition','136.jpg','100','6','n');''')
+conn.execute('''insert into products values(137, 'Grey Embroidery Hoodie','320','m','Pristine Condition','137.jpg','100','6','n');''')
+conn.execute('''insert into products values(138, 'Dots Grey Hoodie','320','m','Pristine Condition','138.jpg','100','6','n');''')
+conn.execute('''insert into products values(139, 'Yellow Hoodie','320','m','Pristine Condition','139.jpg','100','6','n');''')
+conn.execute('''insert into products values(140, 'Peach Hoodie','320','m','Pristine Condition','140.jpg','100','6','n');''')
+conn.execute('''insert into products values(141, 'Grey Tee','80','m','Pristine Condition','141.jpg','100','1','n');''')
+conn.execute('''insert into products values(142, 'Yellow on Black Tee','80','m','Pristine Condition','142.jpg','100','1','n');''')
+conn.execute('''insert into products values(143, 'Black and White Tee','80','m','Pristine Condition','143.jpg','100','1','n');''')
+conn.execute('''insert into products values(144, 'Yellow Tee','80','m','Pristine Condition','144.jpg','100','1','n');''')
+conn.execute('''insert into products values(145, 'Grey Apple Tee','80','m','Pristine Condition','145.jpg','100','1','n');''')
+conn.execute('''insert into products values(146, 'Cat WomanTee','80','m','Pristine Condition','146.jpg','100','1','n');''')
+conn.execute('''insert into products values(147, 'Night Jacket','380','m','Pristine Condition','147.jpg','100','4','n');''')
+conn.execute('''insert into products values(148, 'Duffle Jacket','380','m','Pristine Condition','148.jpg','100','4','n');''')
+conn.execute('''insert into products values(149, 'Red and Black Tee','80','m','Pristine Condition','149.jpg','100','1','n');''')
+conn.execute('''insert into products values(150, 'Black Puffy Jacket','380','m','Pristine Condition','150.jpg','100','4','n');''')
+conn.execute('''insert into products values(151, 'Blue Mock Anorak','320','m','Pristine Condition','151.jpg','100','6','n');''')
+conn.execute('''insert into products values(152, 'Patched Denim','180','m','Pristine Condition','152.jpg','100','5','n');''')
+conn.execute('''insert into products values(153, 'Denim Jacket','290','m','Pristine Condition','153.jpg','100','4','n');''')
+conn.execute('''insert into products values(154, 'Blue Denim','340','m','Pristine Condition','154.jpg','100','5','n');''')
+conn.execute('''insert into products values(155, 'Stripe Jumper','320','m','Pristine Condition','155.jpg','100','6','n');''')
+conn.execute('''insert into products values(156, 'Cream WorkPant','180','m','Pristine Condition','156.jpg','100','5','n');''')
+conn.execute('''insert into products values(157, 'Purple Fleece','220','m','Pristine Condition','157.jpg','100','6','n');''')
+conn.execute('''insert into products values(158, 'Windproof Mock','220','m','Pristine Condition','158.jpg','100','6','n');''')
+conn.execute('''insert into products values(159, 'Navy Goose Jacket','290','m','Pristine Condition','159.jpg','100','4','n');''')
+conn.execute('''insert into products values(160, 'Burgundy Puff Jacket','290','m','Pristine Condition','160.jpg','100','4','n');''')
+conn.execute('''insert into products values(161, 'Light Jacket','290','m','Pristine Condition','161.jpg','100','4','n');''')
+conn.execute('''insert into products values(162, 'Dark Blue Shirt','180','m','Pristine Condition','162.jpg','120','2','p');''')
+conn.execute('''insert into products values(163, 'Wool Duffle Jacket','290','m','Pristine Condition','163.jpg','100','4','n');''')
+conn.execute('''insert into products values(164, 'Navy Thick Jacket','290','m','Pristine Condition','164.jpg','100','4','n');''')
+conn.execute('''insert into products values(165, 'Yellow Light Jacket','290','m','Pristine Condition','165.jpg','100','4','n');''')
+conn.execute('''insert into products values(166, 'Leather Jacket','290','m','Pristine Condition','166.jpg','100','4','n');''')
+conn.execute('''insert into products values(167, 'Cream Jacket','290','m','Pristine Condition','167.jpg','100','4','n');''')
+conn.execute('''insert into products values(168, 'Wool Vest','290','m','Pristine Condition','168.jpg','100','4','n');''')
+conn.execute('''insert into products values(169, 'Yellow Shirt','180','m','Pristine Condition','169.jpg','120','2','n');''')
+conn.execute('''insert into products values(170, 'Yellow Light Jacket','290','m','Pristine Condition','170.jpg','100','4','n');''')
+conn.execute('''insert into products values(171, 'Camel Shirt','180','m','Pristine Condition','171.jpg','120','2','n');''')
+conn.execute('''insert into products values(172, 'Pure Yellow Crewneck','220','m','Pristine Condition','172.jpg','100','6','n');''')
+conn.execute('''insert into products values(173, 'Black Fade Tee','80','m','Pristine Condition','173.jpg','100','1','n');''')
+conn.execute('''insert into products values(174, 'Green Stripe Crewneck','220','m','Pristine Condition','174.jpg','100','6','n');''')
+conn.execute('''insert into products values(175, 'Ice Blue Navy Jacket','230','m','Pristine Condition','175.jpg','100','4','n');''')
+conn.execute('''insert into products values(176, 'Old School Coach Jacket','250','m','Pristine Condition','176.jpg','100','4','n');''')
+conn.execute('''insert into products values(177, 'Red Wool Shirt','180','m','Pristine Condition','177.jpg','120','2','n');''')
+conn.execute('''insert into products values(178, 'Thick Warm Jacket','200','m','Pristine Condition','178.jpg','100','4','n');''')
+conn.execute('''insert into products values(179, 'Classic Red Crewneck','220','m','Pristine Condition','179.jpg','100','6','n');''')
+conn.execute('''insert into products values(180, '90s Track Pant','180','m','Pristine Condition','180.jpg','100','5','n');''')
+conn.execute('''insert into products values(181, 'Yellow Swoosh Crewneck','220','m','Pristine Condition','181.jpg','100','6','n');''')
+conn.execute('''insert into products values(182, '90s Sports Jacket','200','m','Pristine Condition','182.jpg','100','4','n');''')
+conn.execute('''insert into products values(183, 'Light Blue Shirt','160','m','Pristine Condition','183.jpg','120','2','n');''')
+conn.execute('''insert into products values(184, 'Light Purple Jumper','200','m','Pristine Condition','184.jpg','100','6','n');''')
+conn.execute('''insert into products values(185, 'Dark Navy Tee','80','m','Pristine Condition','185.jpg','100','1','n');''')
+conn.execute('''insert into products values(186, 'Dark Yellow Shirt','180','m','Pristine Condition','186.jpg','120','2','n');''')
+conn.execute('''insert into products values(187, 'Original Jumper','200','m','Pristine Condition','187.jpg','100','6','n');''')
+conn.execute('''insert into products values(188, 'Sports Jumper','180','m','Pristine Condition','188.jpg','100','6','n');''')
+conn.execute('''insert into products values(189, '80s Jacket','200','m','Pristine Condition','189.jpg','100','4','n');''')
+conn.execute('''insert into products values(190, 'Denim Jacket','200','m','Pristine Condition','190.jpg','100','4','n');''')
+conn.execute('''insert into products values(191, 'Waffle Shirt','180','m','Pristine Condition','191.jpg','120','2','n');''')
+conn.execute('''insert into products values(192, '90s Training Pant','150','m','Pristine Condition','192.jpg','100','5','n');''')
+conn.execute('''insert into products values(193, '90s Sports Pant','180','m','Pristine Condition','193.jpg','100','5','n');''')
+conn.execute('''insert into products values(194, '90s Windproof Pant','185','m','Pristine Condition','194.jpg','100','5','n');''')
+conn.execute('''insert into products values(195, 'Dark Navy Pant','180','m','Pristine Condition','195.jpg','100','5','n');''')
+conn.execute('''insert into products values(196, 'Outdoor Hoodie','200','m','Pristine Condition','196.jpg','100','6','n');''')
+conn.execute('''insert into products values(197, 'Vintage Denim','160','m','Pristine Condition','197.jpg','100','5','n');''')
+conn.execute('''insert into products values(198, 'Classic Warmpant','130','m','Pristine Condition','198.jpg','100','5','n');''')
+conn.execute('''insert into products values(199, 'Cnvas Pant','190','m','Pristine Condition','199.jpg','100','5','n');''')
+conn.execute('''insert into products values(200, 'Olive Stripe Tee','80','m','Pristine Condition','200.jpg','100','1','n');''')
+conn.execute('''insert into products values(201, 'Peach Tee','80','m','Pristine Condition','201.jpg','100','1','n');''')
+conn.execute('''insert into products values(202, 'Navy Tee','80','m','Pristine Condition','202.jpg','100','1','n');''')
+conn.execute('''insert into products values(203, 'Denim Shirt','180','m','Pristine Condition','203.jpg','120','2','n');''')
+conn.execute('''insert into products values(204, 'White Shirt','180','m','Pristine Condition','204.jpg','120','2','n');''')
+conn.execute('''insert into products values(205, 'Purple Silk Shirt','180','m','Pristine Condition','205.jpg','120','2','n');''')
+conn.execute('''insert into products values(206, 'Corduroy Shirt','180','m','Pristine Condition','206.jpg','120','2','n');''')
+conn.execute('''insert into products values(207, 'Dark Purple Shirt','180','m','Pristine Condition','207.jpg','120','2','n');''')
+conn.execute('''insert into products values(208, 'Red Teddy Jumper','200','m','Pristine Condition','208.jpg','100','6','n');''')
+conn.execute('''insert into products values(209, 'Leather Jacket','290','m','Pristine Condition','209.jpg','100','4','n');''')
+conn.execute('''insert into products values(210, 'Black Cartoon Hoodie','210','m','Pristine Condition','210.jpg','100','6','n');''')
+conn.execute('''insert into products values(211, 'Navy Cargo Pant','130','m','Pristine Condition','211.jpg','100','5','n');''')
+conn.execute('''insert into products values(212, 'Half Zip Jumper','170','m','Pristine Condition','212.jpg','100','6','n');''')
+conn.execute('''insert into products values(213, 'Dark Windproof Jacket','210','m','Pristine Condition','213.jpg','100','4','n');''')
+conn.execute('''insert into products values(214, 'Lakers Jacket','290','m','Pristine Condition','214.jpg','100','4','n');''')
+conn.execute('''insert into products values(215, 'Wool Baseball Jacket','400','m','Pristine Condition','215.jpg','100','4','n');''')
+conn.execute('''insert into products values(216, 'Wool Baseball Jacket','400','m','Pristine Condition','216.jpg','100','4','n');''')
+conn.commit()
+conn.close()
