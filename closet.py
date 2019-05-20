@@ -670,7 +670,7 @@ def shutdown_server():
         os.unlink(app.config['DATABASE'])
 
 if __name__ == '__main__':
-    app.run(host="localhost",port="8000")
+    app.run(host="0.0.0.0",port="8080")
 
 
 
